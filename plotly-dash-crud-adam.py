@@ -1,4 +1,11 @@
-# All my tutorials on https://www.youtube.com/channel/UCqBFsuAz41sqWcFjZkqmJqQ/featured
+'''md
+# Plotly Dash CRUD App
+
+This app shows the application of CRUD between a Plotly Dash app and a PostgreSQL server
+'''
+# Pulled from Adam's Dash-by-Plotly Repo: All my tutorials on https://www.youtube.com/channel/UCqBFsuAz41sqWcFjZkqmJqQ/featured
+
+# Import Libaries
 import dash
 from dash.dependencies import Input, Output, State
 import dash_table
@@ -12,12 +19,17 @@ import plotly.graph_objects as go
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 
+# TODO add requirements.txt for the below pip  install requirement
 # app requires "pip install psycopg2" as well
 
+# Server Setup
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, suppress_callback_exceptions=True)
 app.server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+'''md
+## Configuration of the PostgreSQL server
+'''
 # for your home PostgreSQL test table
 # app.server.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:your_password@localhost/test"
 
@@ -25,6 +37,7 @@ app.server.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.server.config["SQLALCHEMY_DATABASE_URI"] = "postgres://kcfwfqwznavpjq:9473936daf43bff3d17c1dd8ab2c28144dfbf677\
 14cb30622e3017bbe55cdeac@ec2-34-197-188-147.compute-1.amazonaws.com:5432/d9eat64jon4dti"
 
+# setup connection to PostgreSQL with SQLAlchemy
 db = SQLAlchemy(app.server)
 
 
@@ -44,6 +57,9 @@ class Product(db.Model):
 
 
 # ------------------------------------------------------------------------------------------------
+'''
+## App Layout
+'''
 
 app.layout = html.Div([
     html.Div([
@@ -73,8 +89,11 @@ app.layout = html.Div([
 
 
 # ------------------------------------------------------------------------------------------------
+'''
+## Callbacks
+'''
 
-
+# Populate Data
 @app.callback(Output('postgres_datatable', 'children'),
               [Input('interval_pg', 'n_intervals')])
 def populate_datatable(n_intervals):
